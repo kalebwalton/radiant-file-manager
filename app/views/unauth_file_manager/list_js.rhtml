@@ -1,0 +1,3 @@
+var tinyMCEImageList = [
+  <% @attachments.each do |a| %>['<%=a.filename%>', '<%=a.public_filename%>']<% unless a == @attachments.last %>,<% end %><% end %>
+];

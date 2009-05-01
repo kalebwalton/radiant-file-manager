@@ -1,0 +1,21 @@
+<h1>Upload Files</h1>
+
+<% @attachments.each do |attachment| %>
+  <p>
+  <strong><%= attachment.filename %></strong>
+  <% if !attachment.errors.empty? %>
+    <%
+    msgs = []
+    attachment.errors.full_messages.each do |msg|
+      msgs.push(msg)
+    end 
+    %>
+    <em style="color: #900"><%= msgs.join(', ') %></em>
+  <% else %>
+    <em style="color: #090">Successfully uploaded!</em>
+  <% end %>
+  </p>
+<% end %>
+
+<p><%= link_to '<< Back to File Manager', :action => 'list' %></p>
+
