@@ -1,12 +1,12 @@
 <h1>Upload Files</h1>
 
-<% @attachments.each do |attachment| %>
+<% @managed_files.each do |managed_file| %>
   <p>
-  <strong><%= attachment.filename %></strong>
-  <% if !attachment.errors.empty? %>
+  <strong><%= managed_file.filename %></strong>
+  <% if !managed_file.errors.empty? %>
     <%
     msgs = []
-    attachment.errors.full_messages.each do |msg|
+    managed_file.errors.full_messages.each do |msg|
       msgs.push(msg)
     end 
     %>

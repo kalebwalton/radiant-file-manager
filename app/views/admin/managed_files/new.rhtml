@@ -4,7 +4,7 @@
   <% 5.times do |i| 
        count = i+1 %>
     <p>
-      <%=count%>. <%= file_field 'attachment'+count.to_s, :uploaded_data %>
+      <%=count%>. <%= file_field 'managed_file'+count.to_s, :uploaded_data %>
     </p>
     
   <% end %>

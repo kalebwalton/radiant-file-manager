@@ -9,12 +9,12 @@ class FileManagerExtension < Radiant::Extension
   url "http://yourwebsite.com/file_manager"
   
   define_routes do |map|
-    map.connect 'admin/file_manager/:action', :controller => 'file_manager'
-    map.connect 'file/:action', :controller => 'unauth_file_manager'
+    map.connect 'admin/managed_files/:action', :controller => 'admin/managed_files'
+    map.connect 'file_browser/:action', :controller => 'file_browser'
   end
   
   def activate
-    admin.tabs.add "Files", "/admin/file_manager", :after => "Layouts", :visibility => [:all]
+    admin.tabs.add "Files", "/admin/managed_files", :after => "Layouts", :visibility => [:all]
     unless Radiant::Config["file_manager.max_files_per_upload"]
       Radiant::Config.create(:key => "file_manager.max_files_per_upload", :value => 3)
     end

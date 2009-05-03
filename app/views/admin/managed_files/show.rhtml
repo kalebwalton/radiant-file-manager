@@ -1,0 +1,9 @@
+<p><%= link_to '<< Back to File Manager', :action => 'list' %></p>
+
+<% @managed_files.each do |managed_file| %>
+<p align="center">
+<%= image_tag managed_file.public_filename, :size => managed_file.image_size %><br/>
+<%= managed_file.filename %>
+</p>
+<% end %>
+

@@ -1,7 +1,7 @@
-class CreateAttachments < ActiveRecord::Migration
+class CreateManagedFiles < ActiveRecord::Migration
   class << self
     def up
-      create_table :attachments, :force => true do |t|
+      create_table :managed_files, :force => true do |t|
         t.column "content_type", :string
         t.column "filename", :string     
         t.column "size", :integer
@@ -22,7 +22,7 @@ class CreateAttachments < ActiveRecord::Migration
     end
 
     def down
-      drop_table :attachments
+      drop_table :managed_files
       drop_table :db_files
     end
 

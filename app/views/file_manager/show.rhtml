@@ -1,9 +1,0 @@
-<p><%= link_to '<< Back to File Manager', :action => 'list' %></p>
-
-<% @attachments.each do |attachment| %>
-<p align="center">
-<%= image_tag attachment.public_filename, :size => attachment.image_size %><br/>
-<%= attachment.filename %>
-</p>
-<% end %>
-
