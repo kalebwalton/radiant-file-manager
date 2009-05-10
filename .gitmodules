@@ -1,15 +1,9 @@
-[submodule "vendor/attachment_fu"]
-	path = vendor/attachment_fu
+[submodule "vendor/plugins/attachment_fu"]
+	path = vendor/plugins/attachment_fu
 	url = git@github.com:kalebwalton/attachment_fu.git
-[submodule "vendor/will_paginate"]
-	path = vendor/will_paginate
+[submodule "vendor/plugins/will_paginate"]
+	path = vendor/plugins/will_paginate
 	url = git@github.com:kalebwalton/will_paginate.git
-[submodule "attachment_fu"]
-	path = attachment_fu
-	url = /home/user/or/outrighteous/vendor/extensions/file_manager/vendor/plugins/attachment_fu/.git
-[submodule "will_paginate"]
-	path = will_paginate
-	url = /home/user/or/outrighteous/vendor/extensions/file_manager/vendor/plugins/will_paginate/.git
 [submodule "vendor/plugins/mini_magick"]
 	path = vendor/plugins/mini_magick
 	url = git@github.com:kalebwalton/mini_magick.git
