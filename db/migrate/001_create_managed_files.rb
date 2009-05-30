@@ -14,6 +14,10 @@ class CreateManagedFiles < ActiveRecord::Migration
         # only for images (optional)
         t.column "width", :integer  
         t.column "height", :integer
+
+        t.column "created_at", :datetime
+        t.column "updated_at", :datetime
+
       end
     
       create_table :db_files, :force => true do |t|

@@ -1,9 +1,0 @@
-<h1>File Manager</h1>
-
-<ul>
-<% @managed_files.each do |managed_file| -%>
-  <li><%= link_to managed_file.filename, managed_file.public_filename, {:target => "_blank"} %></li>
-<% end -%>
-</ul>
-
-<p><%= link_to 'New', :action => 'new' %></p>

@@ -9,8 +9,11 @@ class FileManagerExtension < Radiant::Extension
   url "http://yourwebsite.com/file_manager"
   
   define_routes do |map|
-    map.connect 'admin/managed_files/:action', :controller => 'admin/managed_files'
     map.connect 'file_browser/:action', :controller => 'file_browser'
+    map.namespace :admin, :member => { :remove => :get } do |admin|
+      admin.resources :managed_files, :member => { :remove => :get }
+      admin.named_route :managed_files_by_type, 'managed_files/type/:file_type', :controller => 'managed_files', :action => 'index'
+    end
   end
   
   def activate

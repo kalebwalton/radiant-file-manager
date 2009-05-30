@@ -1,0 +1,48 @@
+%div{:style=> "float: right; margin-top: 1em;"}
+  Currently using
+  %strong 50 MB
+  of your
+  %strong 1000 MB
+  limit
+
+%h1 Files
+
+#tab-control
+  %div.tabs#tabs
+    %div#tab-toolbar
+      - form_tag(admin_managed_files_url, {:multipart => true, :style => "margin: 0; padding: 0; height: 0;"}) do
+        %div{:style => "margin-top: -5px;"}
+          %strong Upload File
+          = file_field 'managed_file', :uploaded_data
+          = submit_tag "Upload"
+    = tab_link_to "All", admin_managed_files_url
+    - [:photos, :multimedia].each do |type|
+      = tab_link_to type.to_s.humanize, admin_managed_files_by_type_url(type)
+    - if developer?
+      = tab_link_to 'Internal', admin_managed_files_by_type_url('internal')
+    = tab_link_to 'Other', admin_managed_files_by_type_url('other')
+  %br{:style=>"clear: both;"}
+%div.pages#pages
+  %div.page
+    %table#managed_files.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+      %thead
+        %tr
+          %th.filename Filename
+          %th.type Type
+          %th.updated_at Date
+          %th.size Size
+          %th.actions Actions
+      %tbody
+        - @managed_files.each do |managed_file|
+          %tr.node.level-1
+            %td.filename
+              = image_tag('admin/page.png', :alt => 'file-icon')
+              %span= link_to managed_file.filename, edit_admin_managed_file_url(managed_file)
+            %td.type
+              = managed_file.content_type 
+            %td.updated_at
+              = managed_file.updated_at
+            %td.size
+              = number_to_human_size(managed_file.size)
+            %td.actions
+              = link_to image('remove', :alt => 'Remove File'), remove_admin_managed_file_url(managed_file)
