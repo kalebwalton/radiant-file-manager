@@ -18,7 +18,7 @@ class FileManagerExtension < Radiant::Extension
   end
   
   def activate
-    admin.tabs.add "Files", "/admin/managed_files/type/all", :after => "Layouts", :visibility => [:all]
+    admin.tabs.add "Files", "/admin/managed_files", :after => "Layouts", :visibility => [:all]
     if Radiant::Config.table_exists?
       unless Radiant::Config["file_manager.max_files_per_upload"]
         Radiant::Config.create(:key => "file_manager.max_files_per_upload", :value => 3)
