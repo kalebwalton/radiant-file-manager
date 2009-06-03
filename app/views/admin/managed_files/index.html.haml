@@ -1,48 +1,90 @@
-%div{:style=> "float: right; margin-top: 1em;"}
-  Currently using
-  %strong 50 MB
-  of your
-  %strong 1000 MB
-  limit
-
-%h1 Files
-
+- unless request.request_uri =~ /.*selector.*/
+  %h1 Files
+- else
+  %h1 Files & Pages
+  
 #tab-control
   %div.tabs#tabs
-    %div#tab-toolbar
-      - form_tag(admin_managed_files_url, {:multipart => true, :style => "margin: 0; padding: 0; height: 0;"}) do
-        %div{:style => "margin-top: -5px;"}
-          %strong Upload File
-          = file_field 'managed_file', :uploaded_data
-          = submit_tag "Upload"
-    = tab_link_to "All", admin_managed_files_url
-    - [:photos, :multimedia].each do |type|
-      = tab_link_to type.to_s.humanize, admin_managed_files_by_type_url(type)
+    - unless request.request_uri =~ /.*selector.*/
+      %div#tab-toolbar
+        - form_tag(admin_managed_files_url, {:multipart => true, :style => "margin: 0; padding: 0; height: 0;"}) do
+          %div{:style => "margin-top: -5px;"}
+            %strong Upload File
+            = file_field 'managed_file', :uploaded_data
+            = submit_tag "Upload"
+    = tab_link_to "All", 'all'
+    - [:photos, :flash, :multimedia].each do |type|
+      = tab_link_to type.to_s.humanize, type
     - if developer?
-      = tab_link_to 'Internal', admin_managed_files_by_type_url('internal')
-    = tab_link_to 'Other', admin_managed_files_by_type_url('other')
+      = tab_link_to 'Internal', 'internal'
+    = tab_link_to 'Other', 'other'
+    - if request.request_uri =~ /.*selector.*/
+      = tab_link_to 'Pages', 'pages'
   %br{:style=>"clear: both;"}
 %div.pages#pages
   %div.page
-    %table#managed_files.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
-      %thead
-        %tr
-          %th.filename Filename
-          %th.type Type
-          %th.updated_at Date
-          %th.size Size
-          %th.actions Actions
-      %tbody
-        - @managed_files.each do |managed_file|
+    - if params[:file_type] == 'pages'
+      %table#managed_files.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+        %thead
+          %tr
+            %th.title Title
+            %th.actions Actions
+        %tbody
+          - page=Page.find_by_parent_id(nil)
           %tr.node.level-1
-            %td.filename
-              = image_tag('admin/page.png', :alt => 'file-icon')
-              %span= link_to managed_file.filename, edit_admin_managed_file_url(managed_file)
-            %td.type
-              = managed_file.content_type 
-            %td.updated_at
-              = managed_file.updated_at
-            %td.size
-              = number_to_human_size(managed_file.size)
+            %td.title
+              = image_tag('admin/page.png', :alt => 'page-icon')
+              %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
             %td.actions
-              = link_to image('remove', :alt => 'Remove File'), remove_admin_managed_file_url(managed_file)
+              = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
+          - Page.find_by_parent_id(nil).children.each do |page|
+            %tr.node.level-1
+              %td.title
+                = image_tag('admin/page.png', :alt => 'page-icon')
+                %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
+              %td.actions
+                = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
+            - unless page.children.nil? || page.children.empty?
+              - page.children.each do |page|
+                %tr.node.level-2
+                  %td.title
+                    %span{:style=>"width: 30px;"} &nbsp;&nbsp;&nbsp;
+                    = image_tag('admin/page.png', :alt => 'page-icon')
+                    %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
+                  %td.actions
+                    = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
+              - unless page.children.nil? || page.children.empty?
+                - page.children.each do |page|
+                  %tr.node.level-3
+                    %td.title
+                      %span{:style=>"width: 60px;"} &nbsp;&nbsp;&nbsp;
+                      = image_tag('admin/page.png', :alt => 'page-icon')
+                      %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
+                    %td.actions
+                      = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
+    - else
+      %table#managed_files.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
+        %thead
+          %tr
+            %th.filename Filename
+            %th.type Type
+            %th.updated_at Date
+            %th.size Size
+            %th.actions Actions
+        %tbody
+          - @managed_files.each do |managed_file|
+            %tr.node.level-1
+              %td.filename
+                = image_tag('admin/page.png', :alt => 'file-icon')
+                %span= link_to managed_file.filename, edit_admin_managed_file_url(managed_file)
+              %td.type
+                = managed_file.content_type 
+              %td.updated_at
+                = managed_file.updated_at
+              %td.size
+                = number_to_human_size(managed_file.size)
+              %td.actions
+                - if request.request_uri =~ /.*selector.*/
+                  = link_to_function "Select File", "javascript:OpenFile('#{managed_file.public_filename}')"
+                - else
+                  = link_to image('remove', :alt => 'Remove File'), remove_admin_managed_file_url(managed_file)

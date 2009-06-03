@@ -9,15 +9,16 @@ class FileManagerExtension < Radiant::Extension
   url "http://yourwebsite.com/file_manager"
   
   define_routes do |map|
-    map.connect 'file_browser/:action', :controller => 'file_browser'
     map.namespace :admin, :member => { :remove => :get } do |admin|
       admin.resources :managed_files, :member => { :remove => :get }
       admin.named_route :managed_files_by_type, 'managed_files/type/:file_type', :controller => 'managed_files', :action => 'index'
+      admin.resources :managed_files_selector, :member => { :remove => :get }
+      admin.named_route :managed_files_selector_by_type, 'managed_files_selector/type/:file_type', :controller => 'managed_files', :action => 'index'
     end
   end
   
   def activate
-    admin.tabs.add "Files", "/admin/managed_files", :after => "Layouts", :visibility => [:all]
+    admin.tabs.add "Files", "/admin/managed_files/type/all", :after => "Layouts", :visibility => [:all]
     if Radiant::Config.table_exists?
       unless Radiant::Config["file_manager.max_files_per_upload"]
         Radiant::Config.create(:key => "file_manager.max_files_per_upload", :value => 3)

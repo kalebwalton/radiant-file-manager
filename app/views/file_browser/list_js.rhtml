@@ -1,3 +1,0 @@
-var tinyMCEImageList = [
-  <% @managed_files.each do |a| %>['<%=a.filename%>', '<%=a.public_filename%>']<% unless a == @managed_files.last %>,<% end %><% end %>
-];
