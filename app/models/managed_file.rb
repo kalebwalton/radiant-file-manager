@@ -7,4 +7,5 @@ class ManagedFile < ActiveRecord::Base
   after_resize do |record, img|
     record.size = File.size(record.temp_path)
   end
+
 end
