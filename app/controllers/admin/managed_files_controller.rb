@@ -19,7 +19,7 @@ class Admin::ManagedFilesController < Admin::ResourceController
       else                   'thumbnail IS NULL'
     end
 
-    unless current_user.admin? || current_user.developer? || (current_user.respond_to?(:site_admin?) ? current_user.site_admin? : false)
+    unless current_user.admin? || current_user.developer?
       conditions += ' AND internal = 0'
     end
 
