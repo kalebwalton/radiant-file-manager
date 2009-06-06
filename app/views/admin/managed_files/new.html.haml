@@ -1,0 +1,5 @@
+%ul
+- @managed_file.errors.each do |attr, message|
+  %li= attr.humanize+" "+message
+%p
+  = link_to 'Back to file list', admin_managed_files_url

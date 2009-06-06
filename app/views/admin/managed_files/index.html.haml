@@ -11,6 +11,9 @@
           %div{:style => "margin-top: -5px;"}
             %strong Upload File
             = file_field 'managed_file', :uploaded_data
+            - if developer?
+              = check_box_tag 'managed_file[internal]'
+              Internal
             = submit_tag "Upload"
     = tab_link_to "All", 'all'
     - [:photos, :flash, :multimedia].each do |type|
@@ -75,8 +78,11 @@
           - @managed_files.each do |managed_file|
             %tr.node.level-1
               %td.filename
-                = image_tag('admin/page.png', :alt => 'file-icon')
-                %span= link_to managed_file.filename, edit_admin_managed_file_url(managed_file)
+                - if !params[:file_type].nil? && params[:file_type] == 'photos'
+                  = image_tag(managed_file.public_filename(:thumb), :alt => 'file-icon')
+                - else
+                  = image_tag('admin/page.png', :alt => 'file-icon')
+                %span= link_to managed_file.filename, managed_file.public_filename
               %td.type
                 = managed_file.content_type 
               %td.updated_at
