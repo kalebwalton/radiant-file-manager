@@ -1,6 +1,5 @@
 class ManagedFile < ActiveRecord::Base
-  has_attachment :storage => :file_system, :thumbnails => { :thumb => '75>' },
-                     :resize_to => "300>", :max_size => 25.megabytes
+  has_attachment :storage => :file_system, :thumbnails => { :thumb => '75>' }, :max_size => 25.megabytes
   validates_as_attachment
   validates_uniqueness_of :filename, :message => "is already in use"
 
