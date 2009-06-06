@@ -82,7 +82,10 @@
                   = image_tag(managed_file.public_filename(:thumb), :alt => 'file-icon')
                 - else
                   = image_tag('admin/page.png', :alt => 'file-icon')
-                %span= link_to managed_file.filename, managed_file.public_filename
+                - if request.request_uri =~ /.*selector.*/
+                  %span= link_to_function managed_file.filename, "javascript:OpenFile('#{managed_file.public_filename}')"
+                - else
+                  %span= link_to managed_file.filename, managed_file.public_filename
               %td.type
                 = managed_file.content_type 
               %td.updated_at
