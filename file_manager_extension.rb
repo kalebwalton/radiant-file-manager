@@ -1,4 +1,4 @@
-require_dependency 'application'
+require_dependency 'application_controller'
 #require File.join(File.dirname(__FILE__), 'vendor/plugins/attachment_fu/lib/technoweenie/attachment_fu')
 #require File.join(File.dirname(__FILE__), 'vendor/will_paginate/lib/will_paginate')
 #require File.join(File.dirname(__FILE__), 'vendor/will_paginate/lib/will_paginate/view_helpers')

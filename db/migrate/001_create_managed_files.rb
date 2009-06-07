@@ -18,6 +18,8 @@ class CreateManagedFiles < ActiveRecord::Migration
         t.column "created_at", :datetime
         t.column "updated_at", :datetime
 
+        t.column "internal", :boolean
+
       end
     
       create_table :db_files, :force => true do |t|
