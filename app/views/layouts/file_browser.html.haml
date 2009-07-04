@@ -14,14 +14,12 @@
     - if @content_for_page_css
       %style{:type => "text/css"}= @content_for_page_css
   %body
-    #page
-      #main
-        - if flash[:notice]
-          #notice
-            %p= flash[:notice]
-        - if flash[:error]
-          #error
-            %p= flash[:error]
-        #content
-          = find_and_preserve(yield)
-      %hr{:class=>"hidden"}/
+    - if flash[:notice]
+      #notice
+        %p= flash[:notice]
+    - if flash[:error]
+      #error
+        %p= flash[:error]
+    #content{:style=>"background: #FFF; margin: 0; padding:15px;"}
+      = find_and_preserve(yield)
+  %hr{:class=>"hidden"}/
