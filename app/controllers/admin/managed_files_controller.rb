@@ -20,7 +20,7 @@ class Admin::ManagedFilesController < Admin::ResourceController
     end
 
     unless current_user.admin? || current_user.developer?
-      conditions += ' AND internal = 0'
+      conditions += ' AND (internal = 0 OR internal IS NULL)'
     end
 
     @managed_files = ManagedFile.paginate :page => params[:page], :order => 'filename', :conditions => conditions
