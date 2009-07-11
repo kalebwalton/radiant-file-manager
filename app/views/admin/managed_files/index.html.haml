@@ -8,7 +8,7 @@
     - unless request.request_uri =~ /.*selector.*/
       %div#tab-toolbar
         - form_tag(admin_managed_files_url, {:multipart => true, :style => "margin: 0; padding: 0; height: 0;"}) do
-          %div{:style => "margin-top: -5px;"}
+          %div{:style => "margin-top: -10px;"}
             %strong Upload File
             = file_field 'managed_file', :uploaded_data
             - if developer?
@@ -31,57 +31,56 @@
         %thead
           %tr
             %th.title Title
-            %th.actions Actions
-        %tbody
+        %tbody{:style=> "font-size: 11px;"}
           - page=Page.find_by_parent_id(nil)
           %tr.node.level-1
             %td.title
-              = image_tag('admin/page.png', :alt => 'page-icon')
+              = image_tag('admin/page.png', :alt => 'page-icon', :size => "12x15")
               %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
-            %td.actions
-              = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
           - Page.find_by_parent_id(nil).children.each do |page|
             %tr.node.level-1
               %td.title
-                = image_tag('admin/page.png', :alt => 'page-icon')
+                = image_tag('admin/page.png', :alt => 'page-icon', :size => "12x15")
                 %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
-              %td.actions
-                = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
             - unless page.children.nil? || page.children.empty?
               - page.children.each do |page|
                 %tr.node.level-2
                   %td.title
                     %span{:style=>"width: 30px;"} &nbsp;&nbsp;&nbsp;
-                    = image_tag('admin/page.png', :alt => 'page-icon')
+                    = image_tag('admin/page.png', :alt => 'page-icon', :size => "12x15")
                     %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
-                  %td.actions
-                    = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
               - unless page.children.nil? || page.children.empty?
                 - page.children.each do |page|
                   %tr.node.level-3
                     %td.title
                       %span{:style=>"width: 60px;"} &nbsp;&nbsp;&nbsp;
-                      = image_tag('admin/page.png', :alt => 'page-icon')
+                      = image_tag('admin/page.png', :alt => 'page-icon', :size => "12x15")
                       %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
-                    %td.actions
-                      = link_to_function "Select Page", "javascript:OpenFile('#{page.url}')"
+                - unless page.children.nil? || page.children.empty?
+                  - page.children.each do |page|
+                    %tr.node.level-3
+                      %td.title
+                        %span{:style=>"width: 60px;"} &nbsp;&nbsp;&nbsp;
+                        = image_tag('admin/page.png', :alt => 'page-icon', :size => "12x15")
+                        %span= link_to_function page.title, "javascript:OpenFile('#{page.url}')"
     - else
       %table#managed_files.index{:cellspacing=>"0", :border=>"0", :cellpadding=>"0"}
         %thead
           %tr
-            %th.filename Filename
+            %th.filename{:width=>"70%"} Filename
             %th.type Type
             %th.updated_at Date
             %th.size Size
-            %th.actions Actions
-        %tbody
+            - if !(request.request_uri =~ /.*selector.*/)
+              %th.actions Actions
+        %tbody{:style=> "font-size: 11px;"}
           - @managed_files.each do |managed_file|
             %tr.node.level-1
               %td.filename
                 - if !params[:file_type].nil? && params[:file_type] == 'photos'
                   = image_tag(managed_file.public_filename(:thumb), :alt => 'file-icon')
                 - else
-                  = image_tag('admin/page.png', :alt => 'file-icon')
+                  = image_tag('admin/page.png', :alt => 'file-icon', :size => "12x15")
                 - if request.request_uri =~ /.*selector.*/
                   %span= link_to_function managed_file.filename, "javascript:OpenFile('#{managed_file.public_filename}')"
                 - else
@@ -89,11 +88,9 @@
               %td.type
                 = managed_file.content_type 
               %td.updated_at
-                = managed_file.updated_at
-              %td.size
+                = managed_file.updated_at.strftime('%d/%m/%Y')
+              %td.size{:style=>"white-space: nowrap"}
                 = number_to_human_size(managed_file.size)
-              %td.actions
-                - if request.request_uri =~ /.*selector.*/
-                  = link_to_function "Select File", "javascript:OpenFile('#{managed_file.public_filename}')"
-                - else
+              - if !(request.request_uri =~ /.*selector.*/)
+                %td.actions
                   = link_to image('remove', :alt => 'Remove File'), remove_admin_managed_file_url(managed_file)
