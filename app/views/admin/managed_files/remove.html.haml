@@ -6,6 +6,10 @@
   %strong.warning permanently remove
   the following file?
   
+- if @managed_file.internal?
+  %p
+    %strong.warning NOTE: This is an internal file that may be used for the basic layout and graphics in your website. Deleting it may cause undesirable results.
+  
 %table.index#managed_file{:cellpadding=>0, :cellspacing=>0, :border=>0}
   %tbody
     %tr.node.level-1
